@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,9 +40,12 @@ public class PatientControler {
 	 */
 	@ResponseBody
 	@GetMapping
-	public ResponseEntity<List<Patient>> findAll(@RequestParam("key") String value){
+	public ResponseEntity<List<Patient>> findAll(){
 		System.out.println("INFO-entered the find all method of PatientControler");
-		return ResponseEntity.ok(patientService.findAll());
+		List<Patient> patients = patientService.findAll();
+		if (patients.isEmpty())
+			return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(patients);
 	}
 	@ResponseBody
 	@GetMapping("/{username}")
@@ -51,9 +55,10 @@ public class PatientControler {
 	
 	//TODO: adapt findByUsername() to findByPatientName()
 	
-	@PostMapping
+	@PutMapping
 	@ResponseBody
 	public ResponseEntity<Patient> insert(@RequestBody Patient p) {
+		System.out.println("INFO-entered the insert method of PatientControler");
 		return ResponseEntity.ok(patientService.insert(p));
 	}
 }

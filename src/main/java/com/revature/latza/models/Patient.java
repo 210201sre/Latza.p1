@@ -4,13 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
-
-import org.springframework.data.annotation.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +26,6 @@ public class Patient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	//includeing the @Length annotaction cause an issue with the classpath on my package
-	//@Length(min = 1)
 	@NotBlank
 	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	private String username;
