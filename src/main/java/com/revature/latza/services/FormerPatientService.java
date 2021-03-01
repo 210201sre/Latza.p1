@@ -12,12 +12,15 @@ import com.revature.latza.repositories.FormerPatientDAO;
 public class FormerPatientService {
 	@Autowired
 	private FormerPatientDAO fDAO;
+	
 	public FormerPatient findByUsername(String username) {
 		return fDAO.findByUsername(username).orElseThrow( () -> new PatientNotFoundException("No former patient found with username " + username));
 	}
+	
 	public FormerPatient findById(int id) {
 		return fDAO.findById(id).orElseThrow( () -> new PatientNotFoundException("no former patient found with id: " + id));
 	}
+	
 	public FormerPatient save(FormerPatient aFormerPatient) {
 		System.out.println("INFO-entered the insert method of FormerPatientService: " + aFormerPatient.toString());
 		FormerPatient f = fDAO.save(aFormerPatient);

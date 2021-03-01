@@ -1,5 +1,6 @@
 package com.revature.latza.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,52 @@ public class PatientControler {
 	@GetMapping
 	public ResponseEntity<List<Patient>> findAll(){
 		System.out.println("INFO-entered the find all method of PatientControler");
+		
 		List<Patient> patients = aPatientService.findAll();
+		
 		if (patients.isEmpty())
 			return ResponseEntity.noContent().build();
+		
 		return ResponseEntity.ok(patients);
 	}	
+	@ResponseBody
+	@GetMapping("/first_name/{fName}")
+	public ResponseEntity<List<Patient>> findByFisrtName(@PathVariable(name = "fName") String name){
+		System.out.println("INFO-entered the find by first name method of PatientControler");
+		
+		List<Patient> patients = aPatientService.findAll();
+		List<Patient> patients2 = new ArrayList<Patient>();
+		
+		for (Patient p : patients) {
+			if (p.getFirstName().equals(name))
+				patients2.add(p);
+		}
+		
+		if (patients2.isEmpty())
+			return ResponseEntity.noContent().build();
+
+		
+		return ResponseEntity.ok(patients2);
+	}
+	@ResponseBody
+	@GetMapping("/last_name/{lName}")
+	public ResponseEntity<List<Patient>> findByLastName(@PathVariable(name = "lName") String name){
+		System.out.println("INFO-entered the find by last name method of PatientControler");
+		
+		List<Patient> patients = aPatientService.findAll();
+		List<Patient> patients2 = new ArrayList<Patient>();
+		
+		for (Patient p : patients) {
+			if (p.getLastName().equals(name))
+				patients2.add(p);
+		}
+		
+		if (patients2.isEmpty())
+			return ResponseEntity.noContent().build();
+
+		
+		return ResponseEntity.ok(patients2);
+	}
 	@ResponseBody
 	@GetMapping("/usernames/{username}")
 	public ResponseEntity<Patient> findByUsername(@PathVariable(name = "username") String username) {

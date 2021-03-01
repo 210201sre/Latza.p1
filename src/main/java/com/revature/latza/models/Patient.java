@@ -73,7 +73,8 @@ public class Patient {
 	}
 	@Override
 	public String toString() {
-		return "Patient [username=" + username + "]";
+		return "Patient [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", addr=" + addr + "]";
 	}
 
 	/*getters*/
