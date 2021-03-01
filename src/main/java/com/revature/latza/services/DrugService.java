@@ -27,5 +27,7 @@ public class DrugService {
 	}
 	public Drug save(Drug newDrug){
 		return dDAO.save(newDrug);
+		//this method invokes the version from a few levels up the inheritance chain
+		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
 	}
 }

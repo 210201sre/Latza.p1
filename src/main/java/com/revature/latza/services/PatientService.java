@@ -29,9 +29,13 @@ public class PatientService {
 	public Patient save(Patient newPatient) {
 		System.out.println("INFO-entered the insert method of PatientService");
 		return pDAO.save(newPatient);
+		//this method invokes the version from a few levels up the inheritance chain
+		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
 	}
 	public void delete(Patient aPatient) {
 		pDAO.delete(aPatient);
+		//this method invokes the version from a few levels up the inheritance chain
+		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
 	}
 	//TODO: search by first name
 	//TODO: search by last name

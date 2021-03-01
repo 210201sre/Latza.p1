@@ -16,30 +16,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "former_patients", schema = "project1")
 @Data @NoArgsConstructor @AllArgsConstructor
-public class FormerPatient extends Patient {
+public class FormerPatient {
 	/*fields*/
 	@Id
 	@Column(name = "patient_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@NotBlank
-	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	private String username;
-	@NotBlank
-	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	private String firstName;
-	@NotBlank
-	@Pattern(regexp = "[a-zA-Z][a-zA-Z]*")
 	private String lastName;
-	@NotBlank
 	private String addr;
 	
 	/*constructors*/
 	public FormerPatient() {super();}
-	public FormerPatient(int id, @NotBlank @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*") String username,
-			@NotBlank @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*") String firstName,
-			@NotBlank @Pattern(regexp = "[a-zA-Z][a-zA-Z]*") String lastName,
-			@NotBlank @Pattern(regexp = "[0-9][a-zA-Z0-9]*") String addr) {
+	public FormerPatient(int id, String username, String firstName, String lastName, String addr) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -86,4 +76,11 @@ public class FormerPatient extends Patient {
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
+	@Override
+	public String toString() {
+		return "FormerPatient [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", addr=" + addr + "]";
+	}
+	
+	
 }

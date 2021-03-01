@@ -12,14 +12,18 @@ import com.revature.latza.repositories.FormerPatientDAO;
 public class FormerPatientService {
 	@Autowired
 	private FormerPatientDAO fDAO;
-	public Patient findByUsername(String username) {
+	public FormerPatient findByUsername(String username) {
 		return fDAO.findByUsername(username).orElseThrow( () -> new PatientNotFoundException("No former patient found with username " + username));
 	}
-	public Patient findById(int id) {
+	public FormerPatient findById(int id) {
 		return fDAO.findById(id).orElseThrow( () -> new PatientNotFoundException("no former patient found with id: " + id));
 	}
-	public Patient save(FormerPatient newPatient) {
-		System.out.println("INFO-entered the insert method of PatientService");
-		return fDAO.save(newPatient);
+	public FormerPatient save(FormerPatient aFormerPatient) {
+		System.out.println("INFO-entered the insert method of FormerPatientService: " + aFormerPatient.toString());
+		FormerPatient f = fDAO.save(aFormerPatient);
+		//this method invokes the version from a few levels up the inheritance chain
+		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
+		System.out.println("INFO-leaving the insert method of FormerPatientService: " + aFormerPatient.toString());
+		return f;
 	}
 }
