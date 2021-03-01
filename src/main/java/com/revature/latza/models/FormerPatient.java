@@ -28,15 +28,7 @@ public class FormerPatient {
 	private String addr;
 	
 	/*constructors*/
-	public FormerPatient() {super();}
-	public FormerPatient(int id, String username, String firstName, String lastName, String addr) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.addr = addr;
-	}
+
 	public FormerPatient(Patient r) {
 		super();
 		this.id = r.getId();

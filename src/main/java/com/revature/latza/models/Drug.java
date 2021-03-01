@@ -28,13 +28,7 @@ public class Drug {
 	private String drugName;
 	
 	/*Constructors*/
-	public Drug() {}
-	public Drug(int id, @NotBlank String brandName, @NotBlank String drugName) {
-		super();
-		this.id = id;
-		this.brandName = brandName;
-		this.drugName = drugName;
-	}
+
 	
 	/*getters*/
 	public int getId() {return id;}
