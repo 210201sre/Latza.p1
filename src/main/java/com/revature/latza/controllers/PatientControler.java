@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.latza.models.FormerPatient;
 import com.revature.latza.models.Patient;
+import com.revature.latza.services.FormerPatientService;
 import com.revature.latza.services.PatientService;
 
 @Controller
@@ -24,7 +26,9 @@ import com.revature.latza.services.PatientService;
 public class PatientControler {
 	
 	@Autowired
-	private PatientService patientService;
+	private PatientService aPatientService;
+	@Autowired 
+	FormerPatientService aFormerPatientService;
 	//@Autowired invokes inversion of control by obtaining a spring bean/reference to a 
 	//singleton bean from the SpringContainer
 	
@@ -42,23 +46,34 @@ public class PatientControler {
 	@GetMapping
 	public ResponseEntity<List<Patient>> findAll(){
 		System.out.println("INFO-entered the find all method of PatientControler");
-		List<Patient> patients = patientService.findAll();
+		List<Patient> patients = aPatientService.findAll();
 		if (patients.isEmpty())
 			return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(patients);
-	}
+	}	
 	@ResponseBody
-	@GetMapping("/{username}")
+	@GetMapping("/usernames/{username}")
 	public ResponseEntity<Patient> findByUsername(@PathVariable(name = "username") String username) {
-		return ResponseEntity.ok(patientService.findByUsername(username));
+		return ResponseEntity.ok(aPatientService.findByUsername(username));
+		//TODO:fix return no user found
 	}
-	
-	//TODO: adapt findByUsername() to findByPatientName()
-	
+	@GetMapping("/ids/{id}")
+	@ResponseBody
+	public ResponseEntity<Patient> findById(@PathVariable(name = "id") int id){
+		return ResponseEntity.ok(aPatientService.findById(id));
+		//TODO:fix return no user found
+	}
 	@PutMapping
 	@ResponseBody
-	public ResponseEntity<Patient> insert(@RequestBody Patient p) {
+	public ResponseEntity<Patient> save(@RequestBody Patient p) {
 		System.out.println("INFO-entered the insert method of PatientControler");
-		return ResponseEntity.ok(patientService.insert(p));
+		return ResponseEntity.ok(aPatientService.save(p));
+	}
+	@ResponseBody
+	@PostMapping("/anti-patients/{username}")
+	public void delete(@PathVariable(name = "username") String username){
+		Patient thePatient = findByUsername(username).getBody();
+		aFormerPatientService.save(new FormerPatient(thePatient));
+		aPatientService.delete(thePatient);
 	}
 }

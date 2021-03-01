@@ -9,14 +9,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Length;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "patients", schema = "springdata")
+@Table(name = "patients", schema = "project1")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Patient {
 	
@@ -25,12 +23,16 @@ public class Patient {
 	@Column(name = "patient_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 	@NotBlank
 	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	private String username;
+	@NotBlank
+	@Pattern(regexp = "[a-zA-Z][a-zA-Z]*")
 	private String firstName;
+	@NotBlank
+	@Pattern(regexp = "[a-zA-Z][a-zA-Z]*")
 	private String lastName;
+	@NotBlank
 	private String addr;
 	
 	/*Constructors*/

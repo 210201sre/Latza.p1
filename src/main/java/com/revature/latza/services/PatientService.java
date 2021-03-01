@@ -23,9 +23,17 @@ public class PatientService {
 	public Patient findByUsername(String username) {
 		return pDAO.findByUsername(username).orElseThrow( () -> new PatientNotFoundException("No user found with username " + username));
 	}
-	public Patient findById(Integer id) {return null;}
-	public Patient insert(Patient newPatient) {
+	public Patient findById(int id) {
+		return pDAO.findById(id).orElseThrow( () -> new PatientNotFoundException("no user found with id: " + id));
+	}
+	public Patient save(Patient newPatient) {
 		System.out.println("INFO-entered the insert method of PatientService");
 		return pDAO.save(newPatient);
 	}
+	public void delete(Patient aPatient) {
+		pDAO.delete(aPatient);
+	}
+	//TODO: search by first name
+	//TODO: search by last name
 }
+
