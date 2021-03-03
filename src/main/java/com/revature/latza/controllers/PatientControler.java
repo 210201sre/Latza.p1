@@ -8,22 +8,25 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.latza.Project1Application;
+import com.revature.latza.exceptions.DrugNotFoundException;
 import com.revature.latza.exceptions.PatientAlreadyPresentException;
+import com.revature.latza.exceptions.PatientNotFoundException;
+import com.revature.latza.models.Drug;
 import com.revature.latza.models.FormerPatient;
+import com.revature.latza.models.MedListElement;
 import com.revature.latza.models.Patient;
+import com.revature.latza.services.DrugService;
 import com.revature.latza.services.FormerPatientService;
+import com.revature.latza.services.MedListElementService;
 import com.revature.latza.services.PatientService;
 import com.revature.latza.util.MyLoggingUtil;
 
@@ -31,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@RequestMapping("/patients")
+@RequestMapping("api/v1/patients")
 //the argument being passed to RequestMapping defines the URL prefix for all actions taken regarting the Patient model
 public class PatientControler {
 	private static final Logger aLogger = LoggerFactory.getLogger(Project1Application.class);
@@ -39,7 +42,11 @@ public class PatientControler {
 	@Autowired
 	private PatientService aPatientService;
 	@Autowired 
-	FormerPatientService aFormerPatientService;
+	private FormerPatientService aFormerPatientService;
+	@Autowired
+	private DrugService aDrugService;
+	@Autowired
+	private MedListElementService MLES;
 	//@Autowired invokes inversion of control by obtaining a spring bean/reference to a 
 	//singleton bean from the SpringContainer
 	
@@ -141,8 +148,27 @@ public class PatientControler {
 		aPatientService.newAddr(username, addr);
 		MDC.clear();
 	}
-	
-	//TODO: med list method
-	//@ResponseBody @PutMapping("/Rx/{username")
-	
+	@PutMapping("/Rx/{username}/{med}")
+	public ResponseEntity<MedListElement> addRx(@PathVariable(name = "username") String username, @PathVariable(name = "med") String drugname) {
+		MyLoggingUtil.startMDC();
+		aLogger.debug("accessed addRx() method of PatientController v1");
+		Patient p = new Patient();
+		Drug d;
+		try{
+			aLogger.info("attempting to find patient by username");
+			p = aPatientService.findByUsername(username);
+			aLogger.info("attempting to find drug by gen name");
+			d = aDrugService.findByDrugName(drugname);
+		}catch(DrugNotFoundException e) {
+			try{
+				aLogger.warn("attempting to find drug by brand name");
+				d = aDrugService.findByBrandName(drugname);			
+			}catch(DrugNotFoundException f) {
+				return ResponseEntity.status(516).build();
+			}
+		}catch( PatientNotFoundException g) {
+			return ResponseEntity.status(600).build();
+		}
+		return ResponseEntity.ok(MLES.save(new MedListElement(p,d)));
+	}
 }
