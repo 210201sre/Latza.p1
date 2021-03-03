@@ -21,7 +21,10 @@ import com.revature.latza.models.Patient;
 import com.revature.latza.services.FormerPatientService;
 import com.revature.latza.services.PatientService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 @RequestMapping("/patients")
 //the argument being passed to RequestMapping defines the URL prefix for all actions taken regarting the Patient model
 public class PatientControler {
@@ -118,4 +121,5 @@ public class PatientControler {
 		aFormerPatientService.save(new FormerPatient(thePatient));
 		aPatientService.delete(thePatient);
 	}
+	
 }
