@@ -34,11 +34,16 @@ public class MedListElement {
 		Drug drug;
 		
 		int fills;
-		
+
 		public MedListElement(Patient p, Drug d) {
 			this.patient = p;
 			this.drug = d;
 			fills = 0;
+		}
+		public MedListElement(Patient p, Drug d, int fillCount) {
+			this.patient = p;
+			this.drug = d;
+			fills = fillCount;
 		}
 
 		public int getId() {

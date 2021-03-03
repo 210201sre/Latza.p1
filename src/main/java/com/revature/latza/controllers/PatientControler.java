@@ -171,4 +171,36 @@ public class PatientControler {
 		}
 		return ResponseEntity.ok(MLES.save(new MedListElement(p,d)));
 	}
+	@PutMapping("/Rx/{username}/{med}/{fills}")
+	public ResponseEntity<MedListElement> addRx(@PathVariable(name = "username") String username, @PathVariable(name = "med") String drugname, @PathVariable(name = "fills") String fills) {
+		MyLoggingUtil.startMDC();
+		aLogger.debug("accessed addRx() method of PatientController v1");
+		Patient p = new Patient();
+		Drug d;
+		int f = 1;
+		try{
+			aLogger.info("sttempting to convert 'fills' to an Integer");
+			f = Integer.parseInt(fills);
+			aLogger.info("attempting to find patient by username");
+			p = aPatientService.findByUsername(username);
+			aLogger.info("attempting to find drug by gen name");
+			d = aDrugService.findByDrugName(drugname);
+		}catch(DrugNotFoundException e) {
+			try{
+				aLogger.warn("attempting to find drug by brand name");
+				d = aDrugService.findByBrandName(drugname);			
+			}catch(DrugNotFoundException e2) {
+				return ResponseEntity.noContent().build();
+			}
+		}catch( PatientNotFoundException e) {
+			return ResponseEntity.noContent().build();
+		}catch(NumberFormatException e) {
+			aLogger.warn("bad arg passed for fill count");
+			return ResponseEntity.noContent().build();
+
+		}
+		return ResponseEntity.ok(MLES.save(new MedListElement(p,d,f)));
+	}
+	//TODO:inc fill count
+	
 }
