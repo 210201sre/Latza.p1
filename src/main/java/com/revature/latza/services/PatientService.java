@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.latza.Project1Application;
 import com.revature.latza.exceptions.PatientAlreadyPresentException;
 import com.revature.latza.exceptions.PatientNotFoundException;
 import com.revature.latza.models.Patient;
@@ -14,12 +17,13 @@ import com.revature.latza.repositories.PatientDAO;
 
 @Service
 public class PatientService {
+	private static final Logger aLogger = LoggerFactory.getLogger(Project1Application.class);
 
 	@Autowired
 	private PatientDAO pDAO;
 	
 	public List<Patient> findAll() {
-		System.out.println("entered the find all method of PatientService");
+		aLogger.info("entered the find all method of PatientService");
 		return pDAO.findAll();
 	}
 	
@@ -32,7 +36,7 @@ public class PatientService {
 	}
 
 	public Patient save(Patient newPatient) {
-		System.out.println("entered the insert method of PatientService");
+		aLogger.info("entered the insert method of PatientService");
 		if (!pDAO.findByUsername(newPatient.getUsername()).isPresent())
 			return pDAO.save(newPatient);
 		//this method invokes the version from a few levels up the inheritance chain
@@ -41,7 +45,7 @@ public class PatientService {
 	}
 	
 	public void delete(Patient aPatient) {
-		System.out.println("entered the delete method of PatientService");
+		aLogger.info("entered the delete method of PatientService");
 		
 		pDAO.delete(aPatient);
 		//this method invokes the version from a few levels up the inheritance chain

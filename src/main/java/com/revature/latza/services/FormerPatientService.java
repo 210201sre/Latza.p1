@@ -2,9 +2,12 @@ package com.revature.latza.services;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.latza.Project1Application;
 import com.revature.latza.exceptions.PatientNotFoundException;
 import com.revature.latza.models.FormerPatient;
 import com.revature.latza.models.Patient;
@@ -12,6 +15,8 @@ import com.revature.latza.repositories.FormerPatientDAO;
 
 @Service
 public class FormerPatientService {
+	private static final Logger aLogger = LoggerFactory.getLogger(Project1Application.class);
+
 	@Autowired
 	private FormerPatientDAO fDAO;
 	
@@ -24,11 +29,11 @@ public class FormerPatientService {
 	}
 	
 	public FormerPatient save(FormerPatient aFormerPatient) {
-		System.out.println("INFO-entered the insert method of FormerPatientService: " + aFormerPatient.toString());
+		aLogger.info("entered the insert method of FormerPatientService: " + aFormerPatient.toString());
 		FormerPatient f = fDAO.save(aFormerPatient);
 		//this method invokes the version from a few levels up the inheritance chain
 		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
-		System.out.println("INFO-leaving the insert method of FormerPatientService: " + aFormerPatient.toString());
+		aLogger.info("leaving the insert method of FormerPatientService: " + aFormerPatient.toString());
 		return f;
 	}
 	

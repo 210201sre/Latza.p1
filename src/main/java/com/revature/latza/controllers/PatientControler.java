@@ -3,6 +3,8 @@ package com.revature.latza.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.latza.Project1Application;
 import com.revature.latza.exceptions.PatientAlreadyPresentException;
 import com.revature.latza.models.FormerPatient;
 import com.revature.latza.models.Patient;
 import com.revature.latza.services.FormerPatientService;
 import com.revature.latza.services.PatientService;
+import com.revature.latza.util.MyLoggingUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/patients")
 //the argument being passed to RequestMapping defines the URL prefix for all actions taken regarting the Patient model
 public class PatientControler {
-	
+	private static final Logger aLogger = LoggerFactory.getLogger(Project1Application.class);
+
 	@Autowired
 	private PatientService aPatientService;
 	@Autowired 
@@ -51,19 +56,21 @@ public class PatientControler {
 	@ResponseBody
 	@GetMapping
 	public ResponseEntity<List<Patient>> findAll(){
-		System.out.println("entered the find all method of PatientControler");
+		MyLoggingUtil.startMDC();
+		aLogger.info("entered the find all method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
 		
 		if (patients.isEmpty())
 			return ResponseEntity.noContent().build();
-		
+		MDC.clear();
 		return ResponseEntity.ok(patients);
 	}	
 	@ResponseBody
 	@GetMapping("/first_name/{fName}")
 	public ResponseEntity<List<Patient>> findByFisrtName(@PathVariable(name = "fName") String name){
-		System.out.println("entered the find by first name method of PatientControler");
+		MyLoggingUtil.startMDC();
+		aLogger.info("entered the find by first name method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
 		List<Patient> patients2 = new ArrayList<Patient>();
@@ -72,17 +79,16 @@ public class PatientControler {
 			if (p.getFirstName().equals(name))
 				patients2.add(p);
 		}
-		
+		MDC.clear();
 		if (patients2.isEmpty())
 			return ResponseEntity.noContent().build();
-
-		
 		return ResponseEntity.ok(patients2);
 	}
 	@ResponseBody
 	@GetMapping("/last_name/{lName}")
 	public ResponseEntity<List<Patient>> findByLastName(@PathVariable(name = "lName") String name){
-		System.out.println("entered the find by last name method of PatientControler");
+		MyLoggingUtil.startMDC();
+		aLogger.info("entered the find by last name method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
 		List<Patient> patients2 = new ArrayList<Patient>();
@@ -91,42 +97,49 @@ public class PatientControler {
 			if (p.getLastName().equals(name))
 				patients2.add(p);
 		}
-		
+		MDC.clear();
 		if (patients2.isEmpty())
 			return ResponseEntity.noContent().build();
-
-		
 		return ResponseEntity.ok(patients2);
 	}
 	@ResponseBody
 	@GetMapping("/usernames/{username}")
 	public ResponseEntity<Patient> findByUsername(@PathVariable(name = "username") String username) {
+		MyLoggingUtil.startMDC();
+		MDC.clear();
 		return ResponseEntity.ok(aPatientService.findByUsername(username));
 		//TODO:fix return no user found
 	}
 	@GetMapping("/ids/{id}")
 	@ResponseBody
 	public ResponseEntity<Patient> findById(@PathVariable(name = "id") int id){
+		MyLoggingUtil.startMDC();
+		MDC.clear();
 		return ResponseEntity.ok(aPatientService.findById(id));
 		//TODO:fix return no user found
 	}
 	@PutMapping
 	@ResponseBody
 	public ResponseEntity<Patient> save(@RequestBody Patient p) {
+		MyLoggingUtil.startMDC();
 		try {
-			System.out.println("entered the insert method of PatientControler");
+			aLogger.info("entered the insert method of PatientControler");
+			MDC.clear();
 			return ResponseEntity.ok(aPatientService.save(p));
 		}catch(PatientAlreadyPresentException e) {
+			MDC.clear();
 			return ResponseEntity.noContent().build();
 		}
 	}
 	@ResponseBody
 	@PostMapping("/anti-patients/{username}")
 	public void delete(@PathVariable(name = "username") String username){
-		System.out.println("entered the delete() method of patient controler. username: "+username);
+		MyLoggingUtil.startMDC();
+		aLogger.info("entered the delete() method of patient controler. username: "+username);
 		Patient thePatient = findByUsername(username).getBody();
 		aFormerPatientService.save(new FormerPatient(thePatient));
 		aPatientService.delete(thePatient);
+		MDC.clear();
 	}
 	
 	//@ResponseBody @PutMapping("/Rx/{username")
