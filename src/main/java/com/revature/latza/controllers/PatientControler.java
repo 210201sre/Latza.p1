@@ -29,7 +29,7 @@ import com.revature.latza.util.MyLoggingUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @Slf4j
 @RequestMapping("/patients")
 //the argument being passed to RequestMapping defines the URL prefix for all actions taken regarting the Patient model
@@ -53,7 +53,6 @@ public class PatientControler {
 	 * @RequestMapping should be read as "the following method/type needs mapping and is related 
 	 * to an HTTP Request" and not at "I am requesting mapping for the following method/type"
 	 */
-	@ResponseBody
 	@GetMapping
 	public ResponseEntity<List<Patient>> findAll(){
 		MyLoggingUtil.startMDC();
@@ -66,7 +65,6 @@ public class PatientControler {
 		MDC.clear();
 		return ResponseEntity.ok(patients);
 	}	
-	@ResponseBody
 	@GetMapping("/first_name/{fName}")
 	public ResponseEntity<List<Patient>> findByFisrtName(@PathVariable(name = "fName") String name){
 		MyLoggingUtil.startMDC();
@@ -84,7 +82,6 @@ public class PatientControler {
 			return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(patients2);
 	}
-	@ResponseBody
 	@GetMapping("/last_name/{lName}")
 	public ResponseEntity<List<Patient>> findByLastName(@PathVariable(name = "lName") String name){
 		MyLoggingUtil.startMDC();
@@ -102,7 +99,6 @@ public class PatientControler {
 			return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(patients2);
 	}
-	@ResponseBody
 	@GetMapping("/usernames/{username}")
 	public ResponseEntity<Patient> findByUsername(@PathVariable(name = "username") String username) {
 		MyLoggingUtil.startMDC();
@@ -111,7 +107,6 @@ public class PatientControler {
 		//TODO:fix return no user found
 	}
 	@GetMapping("/ids/{id}")
-	@ResponseBody
 	public ResponseEntity<Patient> findById(@PathVariable(name = "id") int id){
 		MyLoggingUtil.startMDC();
 		MDC.clear();
@@ -119,7 +114,6 @@ public class PatientControler {
 		//TODO:fix return no user found
 	}
 	@PutMapping
-	@ResponseBody
 	public ResponseEntity<Patient> save(@RequestBody Patient p) {
 		MyLoggingUtil.startMDC();
 		try {
@@ -131,7 +125,6 @@ public class PatientControler {
 			return ResponseEntity.noContent().build();
 		}
 	}
-	@ResponseBody
 	@PostMapping("/anti-patients/{username}")
 	public void delete(@PathVariable(name = "username") String username){
 		MyLoggingUtil.startMDC();
@@ -141,7 +134,15 @@ public class PatientControler {
 		aPatientService.delete(thePatient);
 		MDC.clear();
 	}
+	@PostMapping("/addr/{username}/{addr}")
+	public void newAddr(@PathVariable(name = "username") String username, @PathVariable(name = "addr") String addr) {
+		MyLoggingUtil.startMDC();
+		aLogger.info("attempting to addr of update: "+username.toUpperCase()+" to: "+addr);
+		aPatientService.newAddr(username, addr);
+		MDC.clear();
+	}
 	
+	//TODO: med list method
 	//@ResponseBody @PutMapping("/Rx/{username")
 	
 }

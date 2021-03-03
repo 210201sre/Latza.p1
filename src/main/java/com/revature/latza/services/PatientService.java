@@ -51,6 +51,11 @@ public class PatientService {
 		//this method invokes the version from a few levels up the inheritance chain
 		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
 	}
+	
+	public void newAddr(String username, String addr) {
+		aLogger.info("entered the newAddr() method of aPatientService");
+		pDAO.updateAddr(username, addr);
+	}
 
 }
 

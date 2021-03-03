@@ -9,4 +9,12 @@ public class MyLoggingUtil {
 		String key = UUID.randomUUID().toString();
 		MDC.put("RequestKey", key);
 	}
+	public static void startMDC(String s) {
+		String key = UUID.randomUUID().toString();
+		MDC.put(s, key);
+	}
+	public static void startMDC(String s, String s2) {
+		MDC.put(s, s2);
+	}
+	
 }
