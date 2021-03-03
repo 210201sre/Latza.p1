@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.latza.exceptions.PatientAlreadyPresentException;
 import com.revature.latza.exceptions.PatientNotFoundException;
 import com.revature.latza.models.Patient;
 import com.revature.latza.repositories.PatientDAO;
@@ -18,7 +19,7 @@ public class PatientService {
 	private PatientDAO pDAO;
 	
 	public List<Patient> findAll() {
-		System.out.println("INFO-entered the find all method of PatientService");
+		System.out.println("entered the find all method of PatientService");
 		return pDAO.findAll();
 	}
 	
@@ -31,13 +32,17 @@ public class PatientService {
 	}
 
 	public Patient save(Patient newPatient) {
-		System.out.println("INFO-entered the insert method of PatientService");
-		return pDAO.save(newPatient);
+		System.out.println("entered the insert method of PatientService");
+		if (!pDAO.findByUsername(newPatient.getUsername()).isPresent())
+			return pDAO.save(newPatient);
 		//this method invokes the version from a few levels up the inheritance chain
 		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
+		throw new PatientAlreadyPresentException("failed to add new patient because username is not unique");
 	}
 	
 	public void delete(Patient aPatient) {
+		System.out.println("entered the delete method of PatientService");
+		
 		pDAO.delete(aPatient);
 		//this method invokes the version from a few levels up the inheritance chain
 		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)

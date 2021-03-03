@@ -1,5 +1,7 @@
 package com.revature.latza.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,9 @@ public class FormerPatientService {
 		//(see JpaRepository which  extends PagingAndSortingRepository which extends CrudRepository)
 		System.out.println("INFO-leaving the insert method of FormerPatientService: " + aFormerPatient.toString());
 		return f;
+	}
+	
+	public List<FormerPatient> findAll() {
+		return fDAO.findAll();
 	}
 }

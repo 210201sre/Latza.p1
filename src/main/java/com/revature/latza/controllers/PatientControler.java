@@ -3,6 +3,7 @@ package com.revature.latza.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.latza.exceptions.PatientAlreadyPresentException;
 import com.revature.latza.models.FormerPatient;
 import com.revature.latza.models.Patient;
 import com.revature.latza.services.FormerPatientService;
@@ -49,7 +51,7 @@ public class PatientControler {
 	@ResponseBody
 	@GetMapping
 	public ResponseEntity<List<Patient>> findAll(){
-		System.out.println("INFO-entered the find all method of PatientControler");
+		System.out.println("entered the find all method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
 		
@@ -61,7 +63,7 @@ public class PatientControler {
 	@ResponseBody
 	@GetMapping("/first_name/{fName}")
 	public ResponseEntity<List<Patient>> findByFisrtName(@PathVariable(name = "fName") String name){
-		System.out.println("INFO-entered the find by first name method of PatientControler");
+		System.out.println("entered the find by first name method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
 		List<Patient> patients2 = new ArrayList<Patient>();
@@ -80,7 +82,7 @@ public class PatientControler {
 	@ResponseBody
 	@GetMapping("/last_name/{lName}")
 	public ResponseEntity<List<Patient>> findByLastName(@PathVariable(name = "lName") String name){
-		System.out.println("INFO-entered the find by last name method of PatientControler");
+		System.out.println("entered the find by last name method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
 		List<Patient> patients2 = new ArrayList<Patient>();
@@ -111,15 +113,22 @@ public class PatientControler {
 	@PutMapping
 	@ResponseBody
 	public ResponseEntity<Patient> save(@RequestBody Patient p) {
-		System.out.println("INFO-entered the insert method of PatientControler");
-		return ResponseEntity.ok(aPatientService.save(p));
+		try {
+			System.out.println("entered the insert method of PatientControler");
+			return ResponseEntity.ok(aPatientService.save(p));
+		}catch(PatientAlreadyPresentException e) {
+			return ResponseEntity.noContent().build();
+		}
 	}
 	@ResponseBody
 	@PostMapping("/anti-patients/{username}")
 	public void delete(@PathVariable(name = "username") String username){
+		System.out.println("entered the delete() method of patient controler. username: "+username);
 		Patient thePatient = findByUsername(username).getBody();
 		aFormerPatientService.save(new FormerPatient(thePatient));
 		aPatientService.delete(thePatient);
 	}
+	
+	//@ResponseBody @PutMapping("/Rx/{username")
 	
 }

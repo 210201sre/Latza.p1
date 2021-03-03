@@ -23,7 +23,7 @@ public class Patient {
 	@Column(name = "patient_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@NotBlank
+	@NotBlank 
 	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	private String username;
 	@NotBlank

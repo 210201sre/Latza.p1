@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "former_patients", schema = "project1")
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data  @AllArgsConstructor
 public class FormerPatient {
 	/*fields*/
 	@Id
@@ -28,7 +28,7 @@ public class FormerPatient {
 	private String addr;
 	
 	/*constructors*/
-
+	public FormerPatient() {}
 	public FormerPatient(Patient r) {
 		super();
 		this.id = r.getId();
