@@ -24,17 +24,18 @@ public class MedListElement {
 		@Column(name = "ml_id")
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private int id;
-		
 		@ManyToOne
 		@JoinColumn(name = "patient_id")
-		Patient patient;
-		
+		private Patient patient;
 		@ManyToOne
 		@JoinColumn(name = "drug_id")
-		Drug drug;
+		private Drug drug;
+		private int fills;
+		private static MedListElement nullElement = buildNullElement();
 		
-		int fills;
-
+		
+		/*constructors*/
+		public MedListElement() {}
 		public MedListElement(Patient p, Drug d) {
 			this.patient = p;
 			this.drug = d;
@@ -46,36 +47,24 @@ public class MedListElement {
 			fills = fillCount;
 		}
 
-		public int getId() {
-			return id;
-		}
+		/*getters*/
+		public int getId() {return id;}
+		public Patient getPatient() {return patient;}
+		public Drug getDrug() {return drug;}
+		public int getFills() {return fills;}
 
-		public void setId(int id) {
-			this.id = id;
-		}
+		/*setters*/
+		public void setId(int id) {this.id = id;}
+		public void setPatient(Patient patient) {this.patient = patient;}
+		public void setDrug(Drug drug) {this.drug = drug;}
+		public void setFills(int fills) {this.fills = fills;}
 
-		public Patient getPatient() {
-			return patient;
+		private static MedListElement buildNullElement() {
+			MedListElement m = new MedListElement();
+			m.setId(-1);
+			m.setPatient(Patient.getNullPatient());
+			m.setDrug(Drug.getNullDrug());
+			m.setFills(-1);
+			return m;
 		}
-
-		public void setPatient(Patient patient) {
-			this.patient = patient;
-		}
-
-		public Drug getDrug() {
-			return drug;
-		}
-
-		public void setDrug(Drug drug) {
-			this.drug = drug;
-		}
-
-		public int getFills() {
-			return fills;
-		}
-
-		public void setFills(int fills) {
-			this.fills = fills;
-		}
-		
 }

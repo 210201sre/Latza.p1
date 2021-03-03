@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "drugs", schema = "project1")
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data  @AllArgsConstructor
 public class Drug {
 	
 	/*fields*/
@@ -26,16 +26,28 @@ public class Drug {
 	private String brandName;
 	@NotBlank
 	private String drugName;
+	private static Drug nullDrug = buildNullDrug();
 	
 	/*Constructors*/
-
+	public Drug() {}
 	
 	/*getters*/
 	public int getId() {return id;}
 	public String getBrandName() {return brandName;}
 	public String getDrugName() {return drugName;}
+	public static Drug getNullDrug() {return nullDrug;}
+	
 	/*setters*/
 	public void setId(int id) {this.id = id;}
 	public void setBrandName(String brandName) {this.brandName = brandName;}
 	public void setDrugName(String drugName) {this.drugName = drugName;}
+	
+	private static Drug buildNullDrug() {
+		Drug d = new Drug();
+		d.setId(-1);
+		d.setBrandName("nullDrug");
+		d.setDrugName("nullDrug");
+		return d;
+	}
+
 }

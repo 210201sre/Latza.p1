@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "patients", schema = "project1")
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data @AllArgsConstructor
 public class Patient {
 	
 	/*fields*/
@@ -35,15 +35,19 @@ public class Patient {
 	@NotBlank
 	private String addr;
 	
+	private static Patient nullPatient = buildNullPatient();
 
 
-
+	/*constructors*/
+	public Patient() {super();}
+	
 	/*getters*/
 	public String getUsername() {return username;}
 	public int getId() {return id;}
 	public String getFirstName() {return firstName;}
 	public String getLastName() {return lastName;}
 	public String getAddr() {return addr;}
+	public static Patient getNullPatient() {return nullPatient;}
 
 	/*setters*/
 	public void setUsername(String username) {this.username = username;}
@@ -51,4 +55,13 @@ public class Patient {
 	public void setFirstName(String firstName) {this.firstName = firstName;}
 	public void setLastName(String lastName) {this.lastName = lastName;}
 	public void setAddr(String addr) {this.addr = addr;}
+	
+	public static Patient buildNullPatient() {
+		Patient p = new Patient();
+		p.setId(-1);
+		p.setFirstName("nullPatient");
+		p.setLastName("nullPatient");
+		p.setAddr("nullPatient");
+		return p;
+	}
 }
