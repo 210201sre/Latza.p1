@@ -28,7 +28,7 @@ import com.revature.latza.services.DrugService;
 import com.revature.latza.services.FormerPatientService;
 import com.revature.latza.services.MedListElementService;
 import com.revature.latza.services.PatientService;
-import com.revature.latza.util.MyLoggingUtil;
+import com.revature.latza.util.LoggingUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,7 +62,7 @@ public class PatientControler {
 	 */
 	@GetMapping
 	public ResponseEntity<List<Patient>> findAll(){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.info("entered the find all method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
@@ -74,7 +74,7 @@ public class PatientControler {
 	}	
 	@GetMapping("/first_name/{fName}")
 	public ResponseEntity<List<Patient>> findByFisrtName(@PathVariable(name = "fName") String name){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.info("entered the find by first name method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
@@ -91,7 +91,7 @@ public class PatientControler {
 	}
 	@GetMapping("/last_name/{lName}")
 	public ResponseEntity<List<Patient>> findByLastName(@PathVariable(name = "lName") String name){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.info("entered the find by last name method of PatientControler");
 		
 		List<Patient> patients = aPatientService.findAll();
@@ -108,21 +108,21 @@ public class PatientControler {
 	}
 	@GetMapping("/usernames/{username}")
 	public ResponseEntity<Patient> findByUsername(@PathVariable(name = "username") String username) {
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		MDC.clear();
 		return ResponseEntity.ok(aPatientService.findByUsername(username));
 		//TODO:fix return no user found
 	}
 	@GetMapping("/ids/{id}")
 	public ResponseEntity<Patient> findById(@PathVariable(name = "id") int id){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		MDC.clear();
 		return ResponseEntity.ok(aPatientService.findById(id));
 		//TODO:fix return no user found
 	}
 	@PutMapping
 	public ResponseEntity<Patient> save(@RequestBody Patient p) {
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		try {
 			aLogger.info("entered the insert method of PatientControler");
 			MDC.clear();
@@ -134,7 +134,7 @@ public class PatientControler {
 	}
 	@PostMapping("/anti-patients/{username}")
 	public void delete(@PathVariable(name = "username") String username){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.info("entered the delete() method of patient controler. username: "+username);
 		Patient thePatient = findByUsername(username).getBody();
 		aFormerPatientService.save(new FormerPatient(thePatient));
@@ -143,14 +143,14 @@ public class PatientControler {
 	}
 	@PostMapping("/addr/{username}/{addr}")
 	public void newAddr(@PathVariable(name = "username") String username, @PathVariable(name = "addr") String addr) {
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.info("attempting to addr of update: "+username.toUpperCase()+" to: "+addr);
 		aPatientService.newAddr(username, addr);
 		MDC.clear();
 	}
 	@PutMapping("/Rx/{username}/{med}")
 	public ResponseEntity<MedListElement> addRx(@PathVariable(name = "username") String username, @PathVariable(name = "med") String drugname) {
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.debug("accessed addRx() method of PatientController v1");
 		Patient p = new Patient();
 		Drug d;
@@ -173,7 +173,7 @@ public class PatientControler {
 	}
 	@PutMapping("/Rx/{username}/{med}/{fills}")
 	public ResponseEntity<MedListElement> addRx(@PathVariable(name = "username") String username, @PathVariable(name = "med") String drugname, @PathVariable(name = "fills") String fills) {
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.debug("accessed addRx() method of PatientController v1");
 		Patient p = new Patient();
 		Drug d;

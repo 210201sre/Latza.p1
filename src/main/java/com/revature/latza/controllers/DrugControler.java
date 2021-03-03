@@ -18,10 +18,10 @@ import com.revature.latza.Project1Application;
 import com.revature.latza.exceptions.DrugNotFoundException;
 import com.revature.latza.models.Drug;
 import com.revature.latza.services.DrugService;
-import com.revature.latza.util.MyLoggingUtil;
+import com.revature.latza.util.LoggingUtil;
 
 @RestController
-@RequestMapping("/drugs")
+@RequestMapping("/api/v1/drugs")
 public class DrugControler {
 	private static final Logger aLogger = LoggerFactory.getLogger(Project1Application.class);
 
@@ -31,7 +31,7 @@ public class DrugControler {
 	//get all drugs
 	@GetMapping
 	public ResponseEntity<List<Drug>> findAll(){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		aLogger.info("entered findAll() of Drug class");
 		List<Drug> drugs = aDrugService.findAll();
 		if(drugs.isEmpty())
@@ -41,7 +41,7 @@ public class DrugControler {
 	//get drug by brand
 	@GetMapping("/{name}")
 	public ResponseEntity<Drug> findByBrandName1(@PathVariable(name = "name") String name){		
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		Drug aDrug;
 		try{
 			aDrug = aDrugService.findByBrandName(name);
@@ -54,7 +54,7 @@ public class DrugControler {
 	//add drug
 	@PutMapping
 	public ResponseEntity<Drug> save(@RequestBody Drug d){
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		MDC.clear();
 		return ResponseEntity.ok(aDrugService.save(d));
 	}

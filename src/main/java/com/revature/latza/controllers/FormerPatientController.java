@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.latza.Project1Application;
 import com.revature.latza.models.FormerPatient;
 import com.revature.latza.services.FormerPatientService;
-import com.revature.latza.util.MyLoggingUtil;
+import com.revature.latza.util.LoggingUtil;
 
 @RestController
 @RequestMapping("/former_patients")
@@ -26,7 +26,7 @@ public class FormerPatientController {
 	
 	@GetMapping
 	public ResponseEntity<List<FormerPatient>> findAll() {
-		MyLoggingUtil.startMDC();
+		LoggingUtil.startMDC();
 		List<FormerPatient> f = FPS.findAll();
 		MDC.clear();
 		if(f.isEmpty())

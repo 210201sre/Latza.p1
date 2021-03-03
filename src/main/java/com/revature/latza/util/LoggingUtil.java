@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.slf4j.MDC;
 
-public class MyLoggingUtil {
+public class LoggingUtil {
 	public static void startMDC() {
 		String key = UUID.randomUUID().toString();
 		MDC.put("RequestKey", key);
