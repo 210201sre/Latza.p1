@@ -2,6 +2,7 @@ package com.revature.latza.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,5 +86,19 @@ public class MedListElementController {
 			return ResponseEntity.status(422).build();
 		}
 		return ResponseEntity.ok(MLES.save(new MedListElement(p,d,f)));
+	}
+	
+	@PutMapping("refills/{username}/{med}/{fills}")
+	public ResponseEntity<String> updateFills(@PathVariable(name = "username") String username, @PathVariable(name = "med") String drugname, @PathVariable(name = "fills") String fills) {
+		LoggingUtil.startMDC();
+		aLogger.info("attempting to add "+fills+" fills of "+drugname+" to "+username+"'s profile");
+		try {
+			MLES.updateFills(username, drugname, fills);
+		}catch(RuntimeException e) {
+			aLogger.warn("bad datatype passed to addFills(Str,Str,Str)");
+			return ResponseEntity.status(422).build();
+		}
+		MDC.clear();
+		return ResponseEntity.ok("refills replaced");
 	}
 }

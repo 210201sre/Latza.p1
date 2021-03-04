@@ -141,14 +141,17 @@ public class PatientControler {
 		aPatientService.delete(thePatient);
 		MDC.clear();
 	}
+	
+	
+	
 	@PostMapping("/addr/{username}/{addr}")
 	public void newAddr(@PathVariable(name = "username") String username, @PathVariable(name = "addr") String addr) {
 		LoggingUtil.startMDC();
-		aLogger.info("attempting to addr of update: "+username.toUpperCase()+" to: "+addr);
+		aLogger.info("attempting to update addr of: "+username.toUpperCase()+" to: "+addr);
 		aPatientService.newAddr(username, addr);
 		MDC.clear();
 	}
 
-	//TODO:inc fill count
+	
 	
 }
