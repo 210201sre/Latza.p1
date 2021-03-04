@@ -9,6 +9,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.revature.latza.repositories.PatientDAO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +21,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "patients", schema = "project1")
 @Data @AllArgsConstructor
 public class Patient {
+	
+	@Autowired
+	private static PatientDAO pDAO;
+	
+	
 	
 	/*fields*/
 	@Id
@@ -35,8 +44,6 @@ public class Patient {
 	@NotBlank
 	private String addr;
 	
-	private static Patient nullPatient = buildNullPatient();
-
 
 	/*constructors*/
 	public Patient() {super();}
@@ -47,7 +54,7 @@ public class Patient {
 	public String getFirstName() {return firstName;}
 	public String getLastName() {return lastName;}
 	public String getAddr() {return addr;}
-	public static Patient getNullPatient() {return nullPatient;}
+//	public static Patient getNullPatient() {return pDAO.findById(nullPatient.getId()).get();}
 
 	/*setters*/
 	public void setUsername(String username) {this.username = username;}
@@ -56,12 +63,4 @@ public class Patient {
 	public void setLastName(String lastName) {this.lastName = lastName;}
 	public void setAddr(String addr) {this.addr = addr;}
 	
-	public static Patient buildNullPatient() {
-		Patient p = new Patient();
-		p.setId(-1);
-		p.setFirstName("nullPatient");
-		p.setLastName("nullPatient");
-		p.setAddr("nullPatient");
-		return p;
-	}
 }

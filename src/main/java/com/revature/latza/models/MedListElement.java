@@ -31,7 +31,6 @@ public class MedListElement {
 		@JoinColumn(name = "drug_id")
 		private Drug drug;
 		private int fills;
-		private static MedListElement nullElement = buildNullElement();
 		
 		
 		/*constructors*/
@@ -59,12 +58,4 @@ public class MedListElement {
 		public void setDrug(Drug drug) {this.drug = drug;}
 		public void setFills(int fills) {this.fills = fills;}
 
-		private static MedListElement buildNullElement() {
-			MedListElement m = new MedListElement();
-			m.setId(-1);
-			m.setPatient(Patient.getNullPatient());
-			m.setDrug(Drug.getNullDrug());
-			m.setFills(-1);
-			return m;
-		}
 }
