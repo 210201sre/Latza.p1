@@ -1,0 +1,49 @@
+version: "3.9"
+
+networks:
+  app:
+
+  services:
+    project1:
+      container_name: project1
+      build: .
+      ports:
+      - 8042:8042
+      volumes:
+      - ./logs/log.txt:/logs\log.text
+      enviroment:
+      - DB_URL: $DB_URL
+      - DB_USERNAME
+      - DB_PASSWORD
+    grafana:
+      image: grafana/grafana:latest
+      ports:
+      - 3000:3000
+      networks:
+      - app
+      container_name: grafana
+      depends_on:
+      - loki
+
+    loki:
+      image: grafana/loki:latest
+      #this is an image within the grafana regestry
+      ports:
+      - 3100:3100
+      networks:
+      - appcontainer_name: loki
+      dependant_on: 
+      - fluentd
+
+    fluentd:
+      image: grafana/fluent-plugin-loki:latest
+      ports:
+      - 24224:24224
+      container_name: fluentd
+      networks:
+      - app
+      environment:
+      - LOKI_URL: http://loki:3100
+      volues:
+      - ./fluent.conf:/fluentd/ect/fluent.conf
+      # [local path from docker-compose.yml to fluent.conf]:[path to desination of fluent.conf on cluster]

@@ -15,7 +15,7 @@ public class Project1Application{
 	private static final Logger aLogger = LoggerFactory.getLogger(Project1Application.class);
 	
 	public static void main(String[] args) {
-		aLogger.info("programStart");
+		aLogger.debug("programStart");
 		SpringApplication.run(Project1Application.class, args);
 		//this run() method bootstraps the rest of the program and its features
 	
