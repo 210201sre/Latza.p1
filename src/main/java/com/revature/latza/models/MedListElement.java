@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @Entity 
 @Table(name = "patient_meds", schema = "project1")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class MedListElement {
 
