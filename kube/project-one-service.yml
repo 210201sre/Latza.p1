@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: latza-project-one-service
+  namespace: thomas-latza
+  labels:
+    app: project-one #
+    svc: cluster
+spec:
+  selector:
+    app: project-one #
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8042
+    targetPort: 8042
+  type: NodePort

@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+#describes the Deployment Object 
+#*adjictives of the Deployment*
+metadata:
+  name: project-one-deployment
+  namespace: thomas-latza
+  labels:
+    app: project-one # this lable does not have to match the others in this file, but usually does
+#spec serves as the template that 'State' should match if everything is working right
+#verbs of the deployment*
+spec:
+
+  selector:
+    matchLabels:
+      # <matchlables app="~"> 
+      # where ~ can be found in 
+      # <metadata>
+      #   <lables app="~"/>
+      # </metadata>
+      # of the Pods it is responible for
+      # the pods inherit this from their containers
+      app: project-one #
+  replicas: 1
+  #tells the Deployment how many of the blueprint it should be maintaining.
+  template:
+  #blueprint that tells the deployment obj what it should be maintinting
+    metadata:
+      labels:
+        app: project-one #
+    spec:
+      volumes:
+      - name: config
+        configMap:
+          name: fluent-conf
+      containers:
+  #===========begining of this container===============#
+      - name: fluentd
+        ports:
+        - containerPort: 24224
+        image: grafana/fluent-plugin-loki:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: LOKI_URL
+          value: HTTP://LOKI:3100
+        volumeMounts: 
+        - name: config 
+          mountPath: /fluentd/ect/fluent.conf
+            #defines where the volume will be mounted within the node
+          subPath: fluent.conf
+            #describes where the directory to be mounted as a volume can be found
+   #===========begining of new container===============#
+      - name: project-one 
+        image: azta1samoh7/project1:testPush
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8042
+        env: 
+        #env varialbe 1
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: latza-cred
+              key: url
+        #env varialbe 
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: latza-cred
+              key: username
+        #env varialbe 
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: latza-cred
+              key: password
+        # livenessProbe:
+        # readinessProbe:
