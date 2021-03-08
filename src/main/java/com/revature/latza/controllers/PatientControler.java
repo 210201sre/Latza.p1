@@ -120,7 +120,7 @@ public class PatientControler {
 		return ResponseEntity.ok(aPatientService.findById(id));
 		//TODO:fix return no user found
 	}
-	@PutMapping
+	@PostMapping
 	public ResponseEntity<Patient> save(@RequestBody Patient p) {
 		LoggingUtil.startMDC();
 		try {
@@ -132,7 +132,7 @@ public class PatientControler {
 			return ResponseEntity.noContent().build();
 		}
 	}
-	@PostMapping("/anti-patients/{username}")
+	@PutMapping("/anti-patients/{username}")
 	public void delete(@PathVariable(name = "username") String username){
 		LoggingUtil.startMDC();
 		aLogger.info("entered the delete() method of patient controler. username: "+username);
@@ -144,7 +144,7 @@ public class PatientControler {
 	
 	
 	
-	@PostMapping("/addr/{username}/{addr}")
+	@PutMapping("/addr/{username}/{addr}")
 	public void newAddr(@PathVariable(name = "username") String username, @PathVariable(name = "addr") String addr) {
 		LoggingUtil.startMDC();
 		aLogger.info("attempting to update addr of: "+username.toUpperCase()+" to: "+addr);
