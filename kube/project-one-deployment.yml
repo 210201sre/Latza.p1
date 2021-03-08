@@ -50,7 +50,7 @@ spec:
             #describes where the directory to be mounted as a volume can be found
    #===========begining of new container===============#
       - name: project-one 
-        image: azta1samoh7/project1:testPush
+        image: azta1samoh7/project1:testPush2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8042
